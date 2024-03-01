@@ -6,7 +6,7 @@ type ProductProps = {
     productName: string,
     productImg: string,
     productStock: number,
-    productPrice: string,
+    productPrice: number,
     handler?: () => void
 }
 
@@ -33,7 +33,7 @@ function ProductCard({
                 <button  className="card__icon"><FaHeart /></button>
                 <div>
                     <span className="card__preci card__preci--before" style={{ fontSize: "14px" }}>stock: {productStock}</span>
-                    <span className="card__preci card__preci--now">{productPrice}</span>
+                    <span className="card__preci card__preci--now">₹{productPrice}</span>
                 </div>
                 <button  className="card__icon"  onClick={handler}><FaCartPlus /> </button>
             </div>
