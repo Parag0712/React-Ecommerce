@@ -15,6 +15,16 @@ a {
   color: black;
 }
 
+$color1: white;
+$color2: rgb(46, 46, 46);
+$color3: rgb(72, 61, 139);
+
+body {
+    
+  background-color: #f5f3f3;
+  user-select: none;
+}
+
 .red {
   color: red;
 }
@@ -25,14 +35,60 @@ a {
   color: rgb(0, 195, 0);
 }
 
-@import "./admin/mixin";
+@import "admin-styles/mixin";
 
-@import "./admin/dashboard";
-@import "./admin/products";
-@import "./admin/chart";
-@import "./admin/dashboardapp";
-@import "./admin/mediaquery";
+@import "admin-styles/dashboard";
+@import "admin-styles/products";
+@import "admin-styles/chart";
+@import "admin-styles/dashboardapp";
+@import "admin-styles/mediaquery";
 
+.header {
+  @include flex(row, flex-end, stretch, 1.2rem);
+  padding: 1rem;
+  margin: 10px;
+  a {
+    display: flex;
+    align-items: center;
+    color: $color2;
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+
+    &:hover {
+      color: $color3;
+    }
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: transparent;
+    &:hover {
+      color: $color3;
+    }
+  }
+
+  dialog {
+
+  background-color: #ffffff;
+  border-radius: 8px;
+    border: none;
+    padding: 10px;
+    z-index: 10;
+    width: 120px;
+    position: absolute;
+    left: calc(100% - 140px);
+    top: 10%;
+    > div {
+      @include flex(column, flex-start, center, 0.45rem);
+    }
+  }
+}
+
+// ADMIN
 .admin-container {
   @include grid(1fr 4fr, 2rem);
   height: 100vh;

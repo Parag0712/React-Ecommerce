@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Loader from "./components/Loader.tsx";
+import Header from "./components/Header.tsx";
 
 // lazy loading when this component use then load without lazy all components load
 const Cart = lazy(() => import('./pages/Cart.tsx'));
@@ -29,6 +30,7 @@ const TransactionManagement = lazy(
 function App() {
   return (
     <Router>
+      <Header />
       {/* Suspense mean some component load then show fallback component */}
       <Suspense fallback={<Loader />}>
         <Routes>
