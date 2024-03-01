@@ -1,0 +1,193 @@
+/* Colors */
+$first-color: #e3f8ff;
+$second-color: #dcfafb;
+$third-color: #ffe8df;
+$accent-color: #ff5151;
+$dark-color: #161616;
+
+/* Typography (responsive) */
+$body-font: "Open Sans";
+$h1-font-size: 1.5rem;
+$h3-font-size: 1rem;
+$normal-font-size: 0.938rem;
+$smaller-font-size: 0.75rem;
+
+@media screen and (min-width: 768px) {
+  $h1-font-size: 2rem;
+  $normal-font-size: 1rem;
+  $smaller-font-size: 0.813rem;
+}
+
+.home {
+  padding: 2rem 4%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  > section {
+    background: url("../assets/ecommerce_banner.jpg");
+    background-size: cover;
+    background-position: center;
+    margin: 10px auto;
+    background-color: #dcfafb;
+    width: 100%;
+    border-radius: 30px;
+    height: 16rem;
+    padding: 20px;
+  }
+
+  .title-shop {
+    @include heading(1px, 700, capitalize);
+    position: relative;
+    // margin-top: 20px;
+    margin-top: 1.5rem;
+    @include flex(row, space-between, center);
+  }
+
+  .findmore {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+  }
+
+  > main {
+    margin-top: 10px;
+    // background-color: #FBA834;
+    // padding: 0px 30px ;
+    border-radius: 1rem;
+    width: 100%;
+    min-height: 20rem;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 100%;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+/*-- COMPONENT --*/
+.card {
+  width: 18rem;
+  height: 18rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  flex: none;
+  border-radius: 1rem;
+  overflow: hidden;
+
+  $colors: (
+    1: $first-color,
+    2: $second-color,
+    3: $third-color,
+  );
+
+  // Apply background colors based on the pattern
+  @for $i from 1 through 1000 {
+    &:nth-child(#{$i}) {
+      $color-index: $i % length($colors) + 1;
+      background-color: map-get($colors, $color-index);
+    }
+  }
+
+  &:nth-child(4) {
+    background-color: $second-color;
+  }
+
+  .card__img {
+    width: 180px;
+    // height: auto;
+    height: 190px;
+    padding: 1rem 0;
+    transition: 0.5s;
+    mix-blend-mode: multiply;
+  }
+
+  .card__img > img {
+    @include square(13.75rem - 3rem);
+    object-fit: contain;
+  }
+  .card__name {
+    position: absolute;
+    left: -25%;
+    top: 0;
+    width: 3.5rem;
+    height: 100%;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    background-color: $dark-color;
+    color: #fff;
+    font-weight: bold;
+    transition: 0.5s;
+  }
+
+  .card__icon {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: $dark-color;
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  .card__precis {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    transition: 0.5s;
+  }
+
+  .card__preci {
+    display: block;
+    text-align: center;
+
+    &--before {
+      font-size: $smaller-font-size;
+      color: $accent-color;
+      margin-bottom: 0.25rem;
+    }
+
+    &--now {
+      cursor: pointer;
+      font-size: $h3-font-size;
+      font-weight: bold;
+    }
+  }
+
+  /*Move left*/
+  &:hover {
+    box-shadow: 0 0.5rem 1rem #d1d9e6;
+    .card__name {
+      left: 0;
+    }
+    .card__img {
+      transform: rotate(30deg);
+      margin-left: 3.5rem;
+    }
+    .card__precis {
+      margin-left: 3.5rem;
+      padding: 0 1.5rem;
+    }
+  }
+}
+
+/*-- MEDIA QUERIES --*/
+@media screen and (min-width: 1200px) {
+  body {
+    margin: 3rem 0 0 0;
+  }
+  .bd-grid {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
