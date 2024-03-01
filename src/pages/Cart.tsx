@@ -71,11 +71,14 @@ function Cart() {
   return (
     <div className="cart">
       <main>
+
         {
-          cardItem.map((i, idx) => (
-            <CartItem key={idx} cartItem={i} incrementHandler={incrementHandler} decrementHandler={decrementHandler} removeHandler={removeHandler} />
-          ))
+          cardItem.length > 0 ?
+            (cardItem.map((i, idx) => (
+              <CartItem key={idx} cartItem={i} incrementHandler={incrementHandler} decrementHandler={decrementHandler} removeHandler={removeHandler} />
+            ))) : (<h1>No Items Added</h1>)
         }
+
       </main>
       <aside>
         <p>Subtotal: ₹{subtotal}</p>
