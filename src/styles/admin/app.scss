@@ -25,13 +25,13 @@ a {
   color: rgb(0, 195, 0);
 }
 
-@import "./admin/mixin";
+@import "admin-styles/mixin";
 
-@import "./admin/dashboard";
-@import "./admin/products";
-@import "./admin/chart";
-@import "./admin/dashboardapp";
-@import "./admin/mediaquery";
+@import "admin-styles/dashboard";
+@import "admin-styles/products";
+@import "admin-styles/chart";
+@import "admin-styles/dashboardapp";
+@import "admin-styles/mediaquery";
 
 .admin-container {
   @include grid(1fr 4fr, 2rem);
