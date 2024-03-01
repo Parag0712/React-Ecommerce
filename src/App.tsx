@@ -7,7 +7,8 @@ import Header from "./components/Header.tsx";
 const Cart = lazy(() => import('./pages/Cart.tsx'));
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Search = lazy(() => import("./pages/Search.tsx"));
-
+const Shipping = lazy(()=> import("./pages/Shipping.tsx"));
+const Login = lazy(()=>import("./pages/Login.tsx"));
 // Admin Imports
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
 const Products = lazy(() => import("./pages/admin/products"));
@@ -37,7 +38,16 @@ function App() {
           <Route path='/' element={<Home />} ></Route>
           <Route path='/search' element={<Search />}></Route>
           <Route path='/cart' element={<Cart />}></Route>
+      
+          {/* Not logged routes */}
+          <Route>
+            <Route path='/login' element={<Login />}></Route>
+          </Route>
 
+          {/* Logged route */}
+          <Route>
+            <Route path='/shipping' element={<Shipping />}></Route>
+          </Route>
 
           {/* ADMIN ROUTES */}
           <Route

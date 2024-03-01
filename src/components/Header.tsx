@@ -3,28 +3,28 @@ import { Link } from "react-router-dom"
 import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useState } from "react"
 const user = {
-  _id: "s",
-  role: "admin"
+  _id: "",
+  role: ""
 }
 function Header() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // For User Drop Down 
   const handleUser = () => {
-    setIsOpen(prev=> !prev);
+    setIsOpen(prev => !prev);
   }
 
-  const handleSignOut = ()=>{
-    setIsOpen(false); 
+  const handleSignOut = () => {
+    setIsOpen(false);
     console.log("logout");
   }
   return (
     <nav className="header">
-      <Link onClick={()=>setIsOpen(false)} to="/">Home</Link>
-      <Link onClick={()=>setIsOpen(false)} to={"/search"}>
+      <Link onClick={() => setIsOpen(false)} to="/">Home</Link>
+      <Link onClick={() => setIsOpen(false)} to={"/search"}>
         <FaSearch />
       </Link>
-      <Link onClick={()=>setIsOpen(false)} to={"/cart"}>
+      <Link onClick={() => setIsOpen(false)} to={"/cart"}>
         <FaShoppingBag />
       </Link>
 
@@ -38,11 +38,11 @@ function Header() {
               <div>
                 {
                   user.role === "admin" && (
-                    <Link onClick={()=>setIsOpen(false)} to={"admin/dashboard"}>Admin</Link>
+                    <Link onClick={() => setIsOpen(false)} to={"admin/dashboard"}>Admin</Link>
                   )
                 }
-                <Link onClick={()=>setIsOpen(false)} to={"/orders"}>Orders</Link>
-                <button onClick={()=>{handleSignOut();}}><FaSignOutAlt /> </button>
+                <Link onClick={() => setIsOpen(false)} to={"/orders"}>Orders</Link>
+                <button onClick={() => { handleSignOut(); }}><FaSignOutAlt /> </button>
               </div>
             </dialog>
           </>

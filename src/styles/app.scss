@@ -5,6 +5,7 @@
 }
 
 * {
+  transition: 0.2s all ease-in-out;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -37,6 +38,8 @@ body {
 @import "admin-styles/mixin";
 @import "_home";
 @import "_cart";
+@import "_shipping";
+@import "login";
 @import "admin-styles/dashboard";
 @import "admin-styles/products";
 @import "admin-styles/chart";
