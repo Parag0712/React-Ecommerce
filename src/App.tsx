@@ -9,6 +9,9 @@ const Home = lazy(() => import("./pages/Home.tsx"));
 const Search = lazy(() => import("./pages/Search.tsx"));
 const Shipping = lazy(()=> import("./pages/Shipping.tsx"));
 const Login = lazy(()=>import("./pages/Login.tsx"));
+const Order = lazy(()=>import("./pages/Order.tsx"));
+const OrderDetails = lazy(()=>import("./pages/OrderDetails.tsx"));
+
 // Admin Imports
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
 const Products = lazy(() => import("./pages/admin/products"));
@@ -21,6 +24,7 @@ const Coupon = lazy(() => import("./pages/admin/apps/coupon"));
 const Stopwatch = lazy(() => import("./pages/admin/apps/stopwatch"));
 const Toss = lazy(() => import("./pages/admin/apps/toss"));
 const NewProduct = lazy(() => import("./pages/admin/management/newproduct"));
+
 const ProductManagement = lazy(
   () => import("./pages/admin/management/productmanagement")
 );
@@ -46,6 +50,8 @@ function App() {
 
           {/* Logged route */}
           <Route>
+            <Route path='/orders' element={<Order />}></Route>
+            <Route path='/orderdetails' element={<OrderDetails />}></Route>
             <Route path='/shipping' element={<Shipping />}></Route>
           </Route>
 
