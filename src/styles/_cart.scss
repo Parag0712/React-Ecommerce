@@ -1,11 +1,25 @@
 .cart {
     padding: 2rem 4rem;
     @include flex(row, unset, unset, 4rem);
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 8rem);
+    overflow-y: auto;
 
+    @media screen and (max-width:600px) {
+        .cart-item{
+            gap: 5px;
+        }
+        .cart-item > article > a {
+            font-size: 0.8rem;
+            word-spacing: 0px;
+            font-weight: bold;
+        };
+        .cart-item > article >span{
+            font-size: 0.8rem;
+        }
+    }
     >main {
         width: 70%;
-        @include flex(column, stretch, stretch);
+        @include flex(column, stretch, unset);
 
         >h1 {
             @include heading(2px);
@@ -17,12 +31,14 @@
         &::-webkit-scrollbar {
             display: none;
         }
-
     }
 
+    
+  
     >aside {
         border-radius: 1rem;
-        background-color: $first-color;
+        box-shadow: 0px 5px 20px 1px rgba(0, 0, 0, 0.1);
+        // background-color: $first-color;
         width: 30%;
         padding: 4rem;
         @include flex(column, center, stretch, 1.5rem);
@@ -40,7 +56,7 @@
         }
 
         >a {
-            background-color: $dark-color   ;
+            background-color: $dark-color;
             padding: 1rem;
             text-decoration: none;
             color: $color1;
@@ -48,6 +64,7 @@
             text-transform: uppercase;
             letter-spacing: 1.2px;
             border-radius: 6px;
+
             &:hover {
                 opacity: 0.8;
             }
@@ -63,10 +80,17 @@
             }
         }
     }
+    @media screen and (max-width:600px) {
+     
+        >aside{
+            margin-top: 20px;
+            padding: 1rem 2rem;
+        }
+    }
 }
 
 .cart-item {
-    padding: 0.3rem 3.3rem;
+    padding: 0.3rem 1.3rem;
 
     border-radius: 1rem;
     @include flex(row, flex-start, center, 3rem);
@@ -87,7 +111,7 @@
 
 >img {
     mix-blend-mode: multiply;
-    @include square(10rem);
+    @include square(3rem);
     object-fit: contain;
 }
 
@@ -95,7 +119,7 @@
     @include flex(column, center, flex-start, 0.25rem);
 
     a {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         color: $color2;
 
         &:hover {
@@ -125,6 +149,12 @@
             color: $color1;
         }
     }
+
+    @media screen and (max-width:600px) {
+        button{
+        @include square(1rem);
+        }
+    }
 }
 
 >button {
@@ -137,5 +167,12 @@
     &:hover {
         color: red;
     }
+ 
 }
+@media screen and (max-width:600px) {
+    >button{
+        font-size: 0.8rem!important;
+    }
+} 
+
 }

@@ -21,7 +21,9 @@ $color2: rgb(46, 46, 46);
 $color3: rgb(72, 61, 139);
 
 body {
-  background-color: #f5f3f3;
+  // background-color: #f5f3f3;
+  background-color: white;
+
   user-select: none;
 }
 
@@ -39,7 +41,8 @@ body {
 @import "_home";
 @import "_cart";
 @import "_shipping";
-@import "login";
+@import "_login";
+@import "_search";
 @import "admin-styles/dashboard";
 @import "admin-styles/products";
 @import "admin-styles/chart";

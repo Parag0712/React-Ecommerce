@@ -36,6 +36,71 @@ const cardItem = [
     productQuantity: 4,
     productStock: 10
   },
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://m.media-amazon.com/images/I/316ArzLeJ2L._SY445_SX342_QL70_FMwebp_.jpg',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://m.media-amazon.com/images/I/316ArzLeJ2L._SY445_SX342_QL70_FMwebp_.jpg',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
+  {
+    productId: 'a',
+    productPhoto: 'https://i.postimg.cc/DfRL0nTy/image.png',
+    productName: "THis Is Shooze Ok",
+    productPrice: 3000,
+    productQuantity: 4,
+    productStock: 10
+  },
 ];
 const subtotal = 4000;
 const tax = Math.round(subtotal * 0.18);

@@ -102,7 +102,7 @@ $smaller-font-size: 0.75rem;
   height: 18rem;
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: column!important;
   align-items: center;
   padding: 1.5rem 2rem;
   flex: none;
