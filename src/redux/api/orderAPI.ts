@@ -1,5 +1,4 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query";
-import { createApi } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AllOrdersResponse, MessageResponse, NewOrderRequest, OrderDetailsResponse, UpdateOrderRequest } from "../../types/api-type";
 
 export const orderAPI = createApi({
@@ -46,3 +45,11 @@ export const orderAPI = createApi({
         })
     }),
 })
+
+export const {
+    useAddOrderMutation,
+    useUpdateOrderMutation,
+    useDeleteOrderMutation,
+    useAllOrdersQuery,
+    useOrderDetailsQuery
+} = orderAPI

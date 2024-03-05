@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BarResponse, LineResponse, PieResponse, StateResponse } from "../../types/api-type";
 
 export const dashboardAPI = createApi({
@@ -25,3 +25,10 @@ export const dashboardAPI = createApi({
         }),
     })
 })
+
+export const {
+    useStatsQuery,
+    usePieQuery,
+    useBarQuery,
+    useLineQuery
+} = dashboardAPI;

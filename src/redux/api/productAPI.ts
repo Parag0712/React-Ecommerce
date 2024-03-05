@@ -9,7 +9,7 @@ export const productAPI = createApi({
     tagTypes: ["product"],
     endpoints: (builder) => ({
         latestProducts: builder.query<AllProductsResponse, string>({
-            query: () => "latest",
+            query: () => "latest?limit=1",
             providesTags: ["product"]
         }),
         allProducts: builder.query<AllProductsResponse, string>({
