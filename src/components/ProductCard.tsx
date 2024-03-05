@@ -1,5 +1,6 @@
 import { FaCartPlus } from 'react-icons/fa';
 import { FaCartShopping, FaHeart } from 'react-icons/fa6';
+import { server } from '../redux/store';
 
 type ProductProps = {
     productId: string,
@@ -19,12 +20,11 @@ function ProductCard({
     handler
 }: ProductProps) {
 
-    // const server = imgLink
     return (
         <article className="card" key={productId}>
             <div className="card__img">
                 <img src={productImg} alt={productName} />
-                {/* <img src={`${server}/${productImg}`} alt={productName} /> */}
+                <img src={`${server}/${productImg}`} alt={productName} />
             </div>
             <div className="card__name">
                 <p>{productName}</p>

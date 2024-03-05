@@ -4,12 +4,13 @@ import { AllProductsResponse, CategoriesResponse, DeleteProductRequest, MessageR
 export const productAPI = createApi({
     reducerPath: "productApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/product`,
+        baseUrl: `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/product/`,
     }),
     tagTypes: ["product"],
+    
     endpoints: (builder) => ({
         latestProducts: builder.query<AllProductsResponse, string>({
-            query: () => "latest?limit=1",
+            query: (limit) => `getLatestProduct?limit=${limit}`,
             providesTags: ["product"]
         }),
         allProducts: builder.query<AllProductsResponse, string>({
@@ -67,14 +68,11 @@ export const productAPI = createApi({
         })
     })
 })
-
 export const {
     useLatestProductsQuery,
-    useAllProductsQuery,
     useAllCategoriesQuery,
-    useSearchProductsQuery,
-    useProductDetailsQuery,
-    useNewProductMutation,
-    useUpdateProductMutation,
+    useAllProductsQuery,
     useDeleteProductMutation,
-} = productAPI
+    useUpdateProductMutation,
+    useNewProductMutation
+} = productAPI;

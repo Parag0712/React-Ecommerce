@@ -10,7 +10,13 @@ export type UserResponse = {
     user: User;
 };
 
-
+export type customError ={
+    status:number,
+    data:{
+        message:string,
+        success:boolean
+    }
+}
 // Product
 export type AllProductsResponse = {
     success: boolean;
