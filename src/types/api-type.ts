@@ -1,4 +1,4 @@
-import { CartItems, Order, Product, ShippingInfo, User } from "./types";
+import { Bar, CartItems, Line, Order, Pie, Product, ShippingInfo, Stats, User } from "./types";
 
 export type MessageResponse = {
     success: boolean;
@@ -10,6 +10,8 @@ export type UserResponse = {
     user: User;
 };
 
+
+// Product
 export type AllProductsResponse = {
     success: boolean;
     product: Product[];
@@ -22,6 +24,52 @@ export type CategoriesResponse = {
     message: string
 };
 
+
+export type ProductResponse = {
+    success: boolean;
+    product: Product;
+    message: string;
+};
+
+// Order
+export type AllOrdersResponse = {
+    success: boolean;
+    orders: Order[];
+    message: string
+};
+export type OrderDetailsResponse = {
+    success: boolean;
+    order: Order;
+};
+
+// State
+export type StateResponse = {
+    success: boolean;
+    stats: Stats,
+    message: string
+};
+
+// Dashboard
+export type PieResponse = {
+    success: boolean;
+    charts: Pie;
+    message: string;
+};
+
+export type BarResponse = {
+    success: boolean;
+    charts: Bar;
+    message: string;
+};
+
+export type LineResponse = {
+    success: boolean;
+    charts: Line;
+    message: string;
+};
+
+
+// Seac
 export type SearchProductsResponse = AllProductsResponse & {
     totalPage: number;
 }
@@ -33,22 +81,6 @@ export type SearchProductsRequest = {
     search: string;
     sort: string;
 }
-
-export type ProductResponse = {
-    success: boolean;
-    product: Product;
-    message: string;
-};
-
-export type AllOrdersResponse = {
-    success: boolean;
-    orders: Order[];
-    message: string
-};
-export type OrderDetailsResponse = {
-    success: boolean;
-    order: Order;
-};
 
 export type NewProductRequest = {
     id: string;
