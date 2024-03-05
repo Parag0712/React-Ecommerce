@@ -13,11 +13,11 @@ export const userReducer = createSlice({
     reducers: {
         userExist: (state, action: PayloadAction<User>) => {
             state.user = action.payload,
-                state.loading = false
+            state.loading = false
         },
         userNotExist: (state) => {
             state.user = null,
-                state.loading = false
+            state.loading = false
         },
     },
 });

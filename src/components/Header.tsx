@@ -2,11 +2,14 @@ import { Link } from "react-router-dom"
 
 import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useState } from "react"
-const user = {
-  _id: "",
-  role: ""
+import { User } from "../types/types";
+
+
+interface PropsType {
+  user: User | null;
 }
-function Header() {
+
+function Header({user}:PropsType) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // For User Drop Down 

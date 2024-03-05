@@ -14,5 +14,5 @@ export type User = {
     gender:string,
     dob:string,
     _id:string,
-    role:string
+    role:string,
 }

@@ -1,17 +1,24 @@
-import { Suspense, lazy } from "react"
+import { Suspense, lazy, useEffect } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Loader from "./components/Loader.tsx";
 import Header from "./components/Header.tsx";
-import {Toaster} from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { auth } from "./Services/firebase.ts";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { userExist, userNotExist } from "./redux/reducers/userReducers.ts";
+import { getUser } from "./redux/api/userAPI.ts";
+import { RootState } from "./redux/store";
+import ProtectedRoute from "./components/protected-route.tsx";
 
 // lazy loading when this component use then load without lazy all components load
 const Cart = lazy(() => import('./pages/Cart.tsx'));
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Search = lazy(() => import("./pages/Search.tsx"));
-const Shipping = lazy(()=> import("./pages/Shipping.tsx"));
-const Login = lazy(()=>import("./pages/Login.tsx"));
-const Order = lazy(()=>import("./pages/Order.tsx"));
-const OrderDetails = lazy(()=>import("./pages/OrderDetails.tsx"));
+const Shipping = lazy(() => import("./pages/Shipping.tsx"));
+const Login = lazy(() => import("./pages/Login.tsx"));
+const Order = lazy(() => import("./pages/Order.tsx"));
+const OrderDetails = lazy(() => import("./pages/OrderDetails.tsx"));
 
 // Admin Imports
 const Dashboard = lazy(() => import("./pages/admin/dashboard"));
@@ -34,33 +41,51 @@ const TransactionManagement = lazy(
 );
 
 function App() {
-  return (
+  const { user, loading } = useSelector((state: RootState) => state.userReducer)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userData = await getUser(user.uid);
+        dispatch(userExist(userData.user))
+      } else {
+        dispatch(userNotExist());
+      }
+    })
+  }, [])
+
+  return loading ? (
+    <Loader />
+  ) : (
     <Router>
-      <Header />
+      <Header user={user} />
       {/* Suspense mean some component load then show fallback component */}
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path='/' element={<Home />} ></Route>
           <Route path='/search' element={<Search />}></Route>
           <Route path='/cart' element={<Cart />}></Route>
-      
+
           {/* Not logged routes */}
-          <Route>
+          <Route element={<ProtectedRoute isAuthenticated={user ? false : true} />}>
             <Route path='/login' element={<Login />}></Route>
           </Route>
 
           {/* Logged route */}
-          <Route>
+          <Route
+            element={<ProtectedRoute isAuthenticated={user ? true : false} />}
+          >
             <Route path='/orders' element={<Order />}></Route>
-            <Route path='/orderdetails' element={<OrderDetails />}></Route>
+            <Route path='/orders/:id' element={<OrderDetails />}></Route>
             <Route path='/shipping' element={<Shipping />}></Route>
           </Route>
 
           {/* ADMIN ROUTES */}
           <Route
-          // element={
-          //   <ProtectedRoute isAuthenticated={true} adminRoute={true} isAdmin={true} />
-          // }
+            element={<ProtectedRoute isAuthenticated={true} adminOnly={true}
+              admin={user?.role === "admin" ? true : false} />}
           >
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/product" element={<Products />} />
