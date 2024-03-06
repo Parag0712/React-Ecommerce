@@ -1,30 +1,22 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import CartItem from "../components/CartItem"
 import { VscError } from "react-icons/vsc";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { Link } from "react-router-dom";
+import CartItem from "../components/CartItem";
+import { addToCard, calculatePrice, discountApplied, removeFromCard } from "../redux/reducers/cartReducers";
+import { RootState, server } from "../redux/store";
 import { CartItems } from "../types/types";
-import { addToCard, calculatePrice, removeFromCard } from "../redux/reducers/cartReducers";
 
-const subtotal = 4000;
-const tax = Math.round(subtotal * 0.18);
-const shippingCharges = 200;
-const discount = 400;
-const total = subtotal + tax + shippingCharges;
 
 function Cart() {
 
-  const { cartItems, discount, loading, shippingInfo, subtotal, tax, total } = useSelector((state: RootState) => state.cartReducers);
+  const { cartItems, discount, subtotal, tax, total, shippingCharges } = useSelector((state: RootState) => state.cartReducers);
+
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setIsValidCouponCode(true);
-    console.log(isValidCouponCode);
-  }, [couponCode])
 
 
   //incrementHandler
@@ -35,19 +27,42 @@ function Cart() {
 
   // decrementHandler
   const decrementHandler = (cartItem: CartItems) => {
-    if (cartItem.quantity <= 1)   return;
+    if (cartItem.quantity <= 1) return;
     dispatch(addToCard({ ...cartItem, quantity: cartItem.quantity - 1 }));
   }
 
   //removeHandler
-  const removeHandler = (productId:string) => {
+  const removeHandler = (productId: string) => {
     dispatch(removeFromCard(productId));
   }
 
+  useEffect(() => {
+    const { token: cancelToken, cancel } = axios.CancelToken.source();
 
-  useEffect(()=>{
+    const timeOutId = setTimeout(() => {
+      axios.get(`${server}/api/v1/payment/coupon/applyDiscount?coupon=${couponCode}`, { cancelToken }).then((res) => {
+        dispatch(discountApplied(res.data.discount));
+        setIsValidCouponCode(true);
+        dispatch(calculatePrice())
+      }).catch((e) => {
+        dispatch(discountApplied(0));
+        dispatch(calculatePrice())
+
+        setIsValidCouponCode(false);
+      })
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeOutId);
+      setIsValidCouponCode(false);
+      cancel();
+    }
+  }, [couponCode])
+
+
+  useEffect(() => {
     dispatch(calculatePrice())
-  },[cartItems])
+  }, [cartItems])
   return (
     <div className="cart">
       <main>
@@ -63,11 +78,12 @@ function Cart() {
         <p>Subtotal: ₹{subtotal}</p>
         <p>Shipping: ₹{subtotal}</p>
         <p>Tax: ₹{tax}</p>
+        <p>shippingCharges: ₹{shippingCharges}</p>
         <p>Discount: <em>
-
-          -₹{discount}
+          - ₹{discount}
         </em></p>
         <b>Total: ₹{total}</b>
+
         <input
           type="text"
           value={couponCode}
@@ -81,7 +97,6 @@ function Cart() {
               (<span className="green">₹{discount} off using the <code>{couponCode}</code></span>) :
               (<span className="red"><VscError /> Invalid Coupon</span>)
           )
-
         }
 
         {CartItem.length > 0 && <Link to="/shipping">Checkout</Link>}

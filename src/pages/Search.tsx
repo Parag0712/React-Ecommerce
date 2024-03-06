@@ -6,6 +6,8 @@ import { useAllCategoriesQuery, useSearchProductsQuery } from "../redux/api/prod
 import { customError } from "../types/api-type";
 import { useDispatch } from "react-redux";
 import { Skeleton } from "../components/Loader";
+import { CartItems } from "../types/types";
+import { addToCard } from "../redux/reducers/cartReducers";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -25,11 +27,14 @@ const Search = () => {
     search,
     sort
   })
+  const addToCartHandler = (cartItem: CartItems) => {
+    if (cartItem.stock == 0) toast.error("out of stock")
+    else {
+      dispatch(addToCard(cartItem))
 
-
-  const addToCartHandler = () => {
-
-  };
+      toast.success("Added in Cart")
+    }
+  }
 
   const isPrevPage = page > 1;
   const isNextPage = page < productsResponse?.totalPage!;
@@ -44,6 +49,8 @@ const Search = () => {
     const err = productError as customError;
     toast.error(err.data.message);
   }
+
+
   return (
     <div className="product-search-page">
       <aside>
@@ -102,7 +109,7 @@ const Search = () => {
         <div className="search-product-list">
 
           {productsIsLoading ? (
-            <Skeleton length={10} width="80vw"/>
+            <Skeleton length={10} width="80vw" />
           ) : (
             productsResponse?.product.map((product) => (
               <ProductCard
@@ -138,8 +145,6 @@ const Search = () => {
             </button>
           </article>
         )}
-
-        {/* )} */}
       </main>
     </div>
   );

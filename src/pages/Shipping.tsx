@@ -1,10 +1,17 @@
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../redux/store";
 
 const Shipping = () => {
   const navigate = useNavigate();
 
+  const { cartItems, discount, subtotal, tax, total, shippingCharges } = useSelector((state: RootState) => state.cartReducers);
+
+  if (cartItems.length <= 0) {
+    navigate("/")
+  }
   const [shippingInfo, setShippingInfo] = useState({
     address: "",
     city: "",
@@ -14,12 +21,13 @@ const Shipping = () => {
   });
 
   //Change Handler
-  const changeHandler = (e:ChangeEvent< HTMLInputElement | HTMLSelectElement>) => {
-    setShippingInfo((prev)=>({...prev,[e.target.name]:e.target.value }))
+  const changeHandler = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setShippingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   // Submit Handler
   const submitHandler = () => {
+    
   }
 
   return (
