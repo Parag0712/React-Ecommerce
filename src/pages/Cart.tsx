@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import CartItem from "../components/CartItem"
 import { VscError } from "react-icons/vsc";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { CartItems } from "../types/types";
+import { addToCard, calculatePrice, removeFromCard } from "../redux/reducers/cartReducers";
 
 const subtotal = 4000;
 const tax = Math.round(subtotal * 0.18);
@@ -12,12 +14,12 @@ const discount = 400;
 const total = subtotal + tax + shippingCharges;
 
 function Cart() {
-  
-  const {cartItems,discount,loading,shippingInfo,subtotal,tax,total} = useSelector((state:RootState)=>state.cartReducers);
+
+  const { cartItems, discount, loading, shippingInfo, subtotal, tax, total } = useSelector((state: RootState) => state.cartReducers);
 
   const [couponCode, setCouponCode] = useState<string>("");
   const [isValidCouponCode, setIsValidCouponCode] = useState<boolean>(false);
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsValidCouponCode(true);
@@ -26,23 +28,29 @@ function Cart() {
 
 
   //incrementHandler
-  const incrementHandler = () => {
-
+  const incrementHandler = (cartItem: CartItems) => {
+    if (cartItem.quantity >= cartItem.stock) return;
+    dispatch(addToCard({ ...cartItem, quantity: cartItem.quantity + 1 }));
   }
 
   // decrementHandler
-  const decrementHandler = () => {
-
+  const decrementHandler = (cartItem: CartItems) => {
+    if (cartItem.quantity <= 1)   return;
+    dispatch(addToCard({ ...cartItem, quantity: cartItem.quantity - 1 }));
   }
 
   //removeHandler
-  const removeHandler = () => {
-
+  const removeHandler = (productId:string) => {
+    dispatch(removeFromCard(productId));
   }
+
+
+  useEffect(()=>{
+    dispatch(calculatePrice())
+  },[cartItems])
   return (
     <div className="cart">
       <main>
-
         {
           cartItems.length > 0 ?
             (cartItems.map((i, idx) => (

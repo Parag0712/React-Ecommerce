@@ -14,9 +14,9 @@ const Productmanagement = () => {
 
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { isLoading, isError, error, data } = useProductDetailsQuery(params?.id!);
+  const { isError, error, data } = useProductDetailsQuery(params?.id!);
 
-  const { _id, category, name, photo, price, stock } = data?.product || {
+  const { category, name, photo, price, stock } = data?.product || {
     photo: "",
     category: "",
     name: "",

@@ -6,6 +6,8 @@ import { useLatestProductsQuery } from "../redux/api/productAPI";
 import { useDispatch } from "react-redux";
 import { Skeleton } from "../components/Loader";
 import toast from "react-hot-toast";
+import { CartItems } from "../types/types";
+import { addToCard } from "../redux/reducers/cartReducers";
 
 function Home() {
 
@@ -16,11 +18,16 @@ function Home() {
 
   const dispatch = useDispatch();
 
-  const addCartHandler = () => {
-    console.log("s");
+  const addCartHandler = (cartItem: CartItems) => {
+    if (cartItem.stock == 0) toast.error("out of stock")
+    else {
+      dispatch(addToCard(cartItem))
+
+      toast.success("Added in Cart")
+    }
   }
 
-  if(isError) toast.error("Cannot Fetched The Products")
+  if (isError) toast.error("Cannot Fetched The Products")
 
   const scrollToCard = (direction: "next" | "previous") => {
     const mainElement = mainRef.current;

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { CartItems } from "../types/types";
+import { server } from "../redux/store";
+import { useDispatch } from "react-redux";
 
 type CartItemProps = {
   cartItem: CartItems;
@@ -16,21 +18,22 @@ function CartItem({
   decrementHandler,
   removeHandler,
 }: CartItemProps) {
+
   const { name:productName, productId:productId, photo:productPhoto, price:productPrice, quantity:productQuantity, stock:productStock } = cartItem;
-  const server = "ssa"
 
   return (
     <div className="cart-item">
-      {/* <img src={`${server}/${productPhoto}`} alt={productName} /> */}
-      <img src={`${productPhoto}`} alt={productName} />
+      <img src={`${server}/${productPhoto}`} alt={productName} />
+      {/* <img src={`${productPhoto}`} alt={productName} /> */}
       <article>
         <Link to={`/product/${productId}`}>{productName}</Link>
         <span>₹{productPrice}</span>
       </article>
+      <span>avalible Stock:{cartItem.stock - cartItem.quantity}</span>
 
       <div>
         <button onClick={() => decrementHandler(cartItem)}>-</button>
-        <p>{productQuantity}</p>
+        <p>{cartItem.quantity}</p>
         <button onClick={() => incrementHandler(cartItem)}>+</button>
       </div>
 
