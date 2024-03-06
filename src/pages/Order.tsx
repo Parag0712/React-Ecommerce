@@ -1,11 +1,17 @@
 import TableHOC from "../components/admin/TableHOC"
 import { Column } from "react-table"
-import { ReactElement, useState } from "react"
+import { ReactElement, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { useMyOrdersQuery } from "../redux/api/orderAPI"
+import { useSelector } from "react-redux"
+import { RootState } from "../redux/store"
+import toast from "react-hot-toast"
+import { customError } from "../types/api-type"
+import { Skeleton } from "../components/Loader"
 
 type DataType = {
     _id: string,
-    quantity:number,
+    quantity: number,
     discount: number,
     amount: number,
     status: ReactElement,
@@ -39,9 +45,11 @@ const column: Column<DataType>[] = [
     },
 ]
 function Order() {
+    const { user } = useSelector((state: RootState) => state.userReducer)
+    const { data, isLoading, isError, error } = useMyOrdersQuery(user?._id!);
     const [rows, setRows] = useState<DataType[]>([{
         _id: "1",
-        quantity:1,
+        quantity: 1,
         discount: 100,
         amount: 100,
         status: <Link to={`/orders/1`}>View</Link>,
@@ -50,11 +58,48 @@ function Order() {
         </span>,
     }]);
 
+    useEffect(() => {
+        if(data){
+            setRows(
+                data?.order.map((i) => ({
+                    _id: i._id,
+                    amount: i.total,
+                    discount: i.discount,
+                    quantity: i.orderItems.length,
+                    status: (
+                        <span
+                            className={
+                                i.status === "Processing"
+                                    ? "red"
+                                    : i.status === "Shipped"
+                                        ? "green"
+                                        : "purple"
+                            }
+                        >
+                            {i.status}
+                        </span>
+                    ),
+                    action: <Link to={`/admin/transaction/${i._id}`}>Manage</Link>,
+                }))
+    
+            )
+        }
+    }, [data])
+
+
+    if (isError) {
+        const err = error as customError;
+        toast.error(err.data.message);
+    }
+
     const Table = TableHOC<DataType>(column, rows, "dashboard-product-box", "Orders", true)();
     return (
         <div className='container'>
             <h1>My Orders</h1>
-            {Table}
+            {
+                isLoading ? <Skeleton length={20} />
+                    : Table
+            }
         </div>
     )
 }

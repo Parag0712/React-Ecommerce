@@ -43,6 +43,9 @@ export type AllOrdersResponse = {
     orders: Order[];
     message: string
 };
+
+export type MyOrderResponse = Omit<AllOrdersResponse, "orders"> & { order: Order[] }
+
 export type OrderDetailsResponse = {
     success: boolean;
     order: Order;
