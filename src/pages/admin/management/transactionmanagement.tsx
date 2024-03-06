@@ -1,65 +1,72 @@
 import { FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
-import { OrderItem } from "../../../types/types";
-import { server } from "../../../redux/store";
-import { useState } from "react";
+import { Order, OrderItem } from "../../../types/types";
+import { RootState, server } from "../../../redux/store";
+import { useDeleteOrderMutation, useOrderDetailsQuery, useUpdateOrderMutation } from "../../../redux/api/orderAPI";
+import { useSelector } from "react-redux";
+import { responseToast } from "../../../utils/features";
 
-const img =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
 
-const orderItems: OrderItem[] = [
-  {
-    name: "Puma Shoes",
-    photo: img,
-    _id: "asdsaasdas",
-    quantity: 4,
-    price: 2000,
-    productId:""
+const defaultData: Order = {
+  shippingInfo: {
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pincode: ""
   },
-];
+  status: "",
+  subtotal: 0,
+  discount: 0,
+  shippingCharges: 0,
+  tax: 0,
+  total: 0,
+  orderItems: [],
+  user: { name: "", _id: "" },
+  _id: ""
+};
 
 const TransactionManagement = () => {
-  const [order, setOrder] = useState({
-    name: "Puma Shoes",
-    address: "77 black street",
-    city: "Neyword",
-    state: "Nevada",
-    country: "US",
-    pinCode: 242433,
-    status: "Processing",
-    subtotal: 4000,
-    discount: 1200,
-    shippingCharges: 0,
-    tax: 200,
-    total: 4000 + 200 + 0 - 1200,
-    orderItems,
-  });
+
+  const params = useParams();
+  const { data } = useOrderDetailsQuery(params?.id!)
+  const { user } = useSelector((state: RootState) => state.userReducer);
+  const navigate = useNavigate();
 
   const {
-    name,
-    address,
-    city,
-    country,
-    state,
-    pinCode,
-    subtotal,
-    shippingCharges,
-    tax,
-    discount,
-    total,
+    shippingInfo: { address, city, state, country, pincode },
+    orderItems,
+    user: { name },
     status,
-  } = order;
+    tax,
+    subtotal,
+    total,
+    discount,
+    shippingCharges,
+  } = data?.order || defaultData;
 
-  const deleteHandler =()=> {
 
+  const [updateOrder] = useUpdateOrderMutation();
+  const [deleteOrder] = useDeleteOrderMutation();
+
+  const deleteHandler = async () => {
+    const res = await deleteOrder({
+      userId: user?._id!,
+      orderId: data?.order._id!
+    })
+    responseToast(res, navigate, "/admin/transaction")
   }
-  const updateHandler = (): void => {
-    setOrder((prev) => ({
-      ...prev,
-      status: "Shipped",
-    }));
+
+
+  const updateHandler = async () => {
+    const res = await updateOrder({
+      userId: user?._id!,
+      orderId: data?.order._id!
+    })
+    responseToast(res, navigate, "/admin/transaction")
   };
+
 
   return (
     <div className="admin-container">
@@ -93,7 +100,7 @@ const TransactionManagement = () => {
           <h5>User Info</h5>
           <p>Name: {name}</p>
           <p>
-            Address: {`${address}, ${city}, ${state}, ${country} ${pinCode}`}
+            Address: {`${address}, ${city}, ${state}, ${country} ${pincode}`}
           </p>
           <h5>Amount Info</h5>
           <p>Subtotal: {subtotal}</p>
@@ -110,8 +117,8 @@ const TransactionManagement = () => {
                 status === "Delivered"
                   ? "purple"
                   : status === "Shipped"
-                  ? "green"
-                  : "red"
+                    ? "green"
+                    : "red"
               }
             >
               {status}
@@ -135,7 +142,7 @@ const ProductCard = ({
 }: OrderItem) => (
   <div className="transaction-product-card">
     <img src={photo} alt={name} />
-    <Link to={`/product/${productId}`}>{name}</Link>
+    <Link to={`/admin/product/${productId}`}>{name}</Link>
     <span>
       ₹{price} X {quantity} = ₹{price * quantity}
     </span>
