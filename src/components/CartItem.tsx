@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
-import { CartItem } from "../types/types";
+import { CartItems } from "../types/types";
 
 type CartItemProps = {
-  cartItem: CartItem;
-  incrementHandler: (cartItem: CartItem) => void;
-  decrementHandler: (cartItem: CartItem) => void;
+  cartItem: CartItems;
+  incrementHandler: (cartItem: CartItems) => void;
+  decrementHandler: (cartItem: CartItems) => void;
   removeHandler: (id: string) => void;
 };
 
@@ -16,7 +16,7 @@ function CartItem({
   decrementHandler,
   removeHandler,
 }: CartItemProps) {
-  const { productName, productId, productPhoto, productPrice, productQuantity, productStock } = cartItem;
+  const { name:productName, productId:productId, photo:productPhoto, price:productPrice, quantity:productQuantity, stock:productStock } = cartItem;
   const server = "ssa"
 
   return (

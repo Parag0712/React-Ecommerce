@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { productAPI } from "./api/productAPI";
 import { userAPI } from "./api/userAPI";
 import { userReducer } from "./reducers/userReducers";
+import { cartReducers } from "./reducers/cartReducers";
 
 export const server = import.meta.env.VITE_SERVER_BASE_URL;
 
 export const store = configureStore({
     reducer: {
         [userReducer.name]: userReducer.reducer,
+        [cartReducers.name]: cartReducers.reducer,
         [userAPI.reducerPath]: userAPI.reducer,
         [productAPI.reducerPath]: productAPI.reducer,
     },
