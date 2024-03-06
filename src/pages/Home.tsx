@@ -65,62 +65,6 @@ function Home() {
             ))
           )
           }
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/4dBHXR1Z/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/8PkwdTYd/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/4dBHXR1Z/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addCartHandler}
-          />
         </div>
 
         <button className="leftBtn" onClick={() => scrollToCard("previous")}><FaCircleArrowLeft /></button>

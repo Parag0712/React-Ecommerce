@@ -1,5 +1,11 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { useNewProductMutation } from "../../../redux/api/productAPI";
+import toast from "react-hot-toast";
+import { responseToast } from "../../../utils/features";
+import { useNavigate } from "react-router-dom";
 
 const NewProduct = () => {
   const [name, setName] = useState<string>("");
@@ -8,7 +14,11 @@ const NewProduct = () => {
   const [stock, setStock] = useState<number>(1);
   const [photoPrev, setPhotoPrev] = useState<string>("");
   const [photo, setPhoto] = useState<File>();
+  const navigate = useNavigate();
+  
+  const {user} = useSelector((state:RootState)=>state.userReducer);
 
+  const [addNewProduct] = useNewProductMutation()
   const changeImageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const file: File | undefined = e.target.files?.[0];
 
@@ -25,12 +35,28 @@ const NewProduct = () => {
     }
   };
 
+  const submitHandler = async (e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+  
+    if (!name || !price || stock < 0 || !category || !photo) toast.error("All Field Required");
+
+    const formData = new FormData();
+    formData.set("name",name);
+    formData.set("stock",stock.toString());
+    formData.set("category",category);
+    formData.set("price",price.toString());
+    formData.set("photo",photo as File);
+
+    const res = await addNewProduct({formData,id:user?._id!})
+    responseToast(res , navigate, "/admin/product");
+  }
+
   return (
     <div className="admin-container">
       <AdminSidebar />
       <main className="product-management">
         <article>
-          <form>
+          <form onSubmit={submitHandler}>
             <h2>New Product</h2>
             <div>
               <label>Name</label>
