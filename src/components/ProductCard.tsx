@@ -22,8 +22,7 @@ function ProductCard({
 
     return (
         <article className="card" key={productId}>
-            <div className="card__img">
-                <img src={productImg} alt={productName} />
+            <div className="card__img"> 
                 <img src={`${server}/${productImg}`} alt={productName} />
             </div>
             <div className="card__name">

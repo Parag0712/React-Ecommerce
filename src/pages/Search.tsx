@@ -1,8 +1,11 @@
 import { useState } from "react";
 
 import toast from "react-hot-toast";
-import { CartItem } from "../types/types";
 import ProductCard from "../components/ProductCard";
+import { useAllCategoriesQuery, useSearchProductsQuery } from "../redux/api/productAPI";
+import { customError } from "../types/api-type";
+import { useDispatch } from "react-redux";
+import { Skeleton } from "../components/Loader";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -11,14 +14,36 @@ const Search = () => {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
+  const dispatch = useDispatch();
+
+  // RTK 
+  const { data: categoriesResponse, error, isError, isLoading: loadingCategories } = useAllCategoriesQuery("");
+  const { data: productsResponse, isError: productsIsError, isLoading: productsIsLoading, error: productError } = useSearchProductsQuery({
+    category,
+    page,
+    price: maxPrice,
+    search,
+    sort
+  })
+
 
   const addToCartHandler = () => {
 
   };
 
-  const isPrevPage = true;
-  const isNextPage = true;
+  const isPrevPage = page > 1;
+  const isNextPage = page < productsResponse?.totalPage!;
 
+  // For Error
+  if (isError) {
+    const err = error as customError
+    toast.error(err.data.message);
+  }
+
+  if (productsIsError) {
+    const err = productError as customError;
+    toast.error(err.data.message);
+  }
   return (
     <div className="product-search-page">
       <aside>
@@ -50,12 +75,12 @@ const Search = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="">ALL</option>
-            {/* {!loadingCategories &&
-              categoriesResponse?.categories.map((i) => (
-                <option key={i} value={i}>
-                  {i.toUpperCase()}
-                </option>
-              ))} */}
+            {
+              !loadingCategories &&
+              categoriesResponse?.categories.map((category) => (
+                <option key={category} value={category}>{category.toUpperCase()}</option>
+              ))
+            }
           </select>
         </div>
       </aside>
@@ -65,79 +90,55 @@ const Search = () => {
           type="text"
           placeholder="Search by name..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+
+          onChange={(e) => {
+            const sanitizedValue = e.target.value.replace(/[^\w\s]/gi, '');
+            setSearch(sanitizedValue)
+            setPage(1)
+          }}
         />
 
 
-
         <div className="search-product-list">
-          <ProductCard
-            productId=""
-            productImg="https://m.media-amazon.com/images/I/316ArzLeJ2L._SY445_SX342_QL70_FMwebp_.jpg"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/4dBHXR1Z/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/DfRL0nTy/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/8PkwdTYd/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
-          <ProductCard
-            productId=""
-            productImg="https://i.postimg.cc/4dBHXR1Z/image.png"
-            productName="AIR ZOOM PEGASUS"
-            productStock={2}
-            productPrice={749.00}
-            handler={addToCartHandler}
-          />
+
+          {productsIsLoading ? (
+            <Skeleton length={10} width="80vw"/>
+          ) : (
+            productsResponse?.product.map((product) => (
+              <ProductCard
+                key={product._id}
+                productId={product._id}
+                productImg={product.photo}
+                productName={product.name}
+                productStock={product.stock}
+                productPrice={product.price}
+                handler={addToCartHandler}
+              />
+            ))
+          )
+          }
         </div>
 
-        <article>
-          <button
-            disabled={!isPrevPage}
-            onClick={() => setPage((prev) => prev - 1)}
-          >
-            Prev
-          </button>
-          <span>
-            {page} of {4}
-          </span>
-          <button
-            disabled={!isNextPage}
-            onClick={() => setPage((prev) => prev + 1)}
-          >
-            Next
-          </button>
-        </article>
+        {productsResponse && productsResponse?.totalPage > 1 && (
+          <article>
+            <button
+              disabled={!isPrevPage}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              Prev
+            </button>
+            <span>
+              {page} of {productsResponse.totalPage}
+            </span>
+            <button
+              disabled={!isNextPage}
+              onClick={() => setPage((prev) => prev + 1)}
+            >
+              Next
+            </button>
+          </article>
+        )}
+
         {/* )} */}
       </main>
     </div>
