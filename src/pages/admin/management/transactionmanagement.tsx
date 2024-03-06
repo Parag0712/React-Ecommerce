@@ -30,9 +30,11 @@ const defaultData: Order = {
 const TransactionManagement = () => {
 
   const params = useParams();
-  const { data } = useOrderDetailsQuery(params?.id!)
+  const { data,isError } = useOrderDetailsQuery(params?.id!)
   const { user } = useSelector((state: RootState) => state.userReducer);
   const navigate = useNavigate();
+
+  if(isError) navigate("/404")
 
   const {
     shippingInfo: { address, city, state, country, pincode },

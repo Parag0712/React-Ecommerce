@@ -288,6 +288,15 @@ body {
   animation: skeleon-loading 1.5s infinite;
 }
 
+
+.not-found {
+  height: 80vh;
+  @include flex(column);
+  > svg {
+    font-size: 5rem;
+  }
+}
+
 @keyframes loading-animation {
   to {
     transform: rotateZ(360deg);

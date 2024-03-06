@@ -84,7 +84,7 @@ const Productmanagement = () => {
   }, [data])
 
 
-  if (isError) toast.error((error as customError).data.message)
+  if(isError) return <Navigate to="/404" />
 
   if (isError) return <Navigate to={"/404"} />;
   return (

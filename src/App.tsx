@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/protected-route.tsx";
 
 // lazy loading when this component use then load without lazy all components load
 const Cart = lazy(() => import('./pages/Cart.tsx'));
+const NotFound = lazy(() => import('./pages/NotFound.tsx'));
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Search = lazy(() => import("./pages/Search.tsx"));
 const Shipping = lazy(() => import("./pages/Shipping.tsx"));
@@ -108,6 +109,7 @@ function App() {
             <Route path="/admin/transaction/:id" element={<TransactionManagement />} />
           </Route>;
 
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
 
