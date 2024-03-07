@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,9 +14,6 @@ const Shipping = () => {
 
   const { cartItems, discount, subtotal, tax, total, shippingCharges } = useSelector((state: RootState) => state.cartReducers);
 
-  if (cartItems.length <= 0) {
-    navigate("/")
-  }
   const [shippingInfo, setShippingInfo] = useState({
     address: "",
     city: "",
@@ -43,7 +40,6 @@ const Shipping = () => {
         }
       });
 
-
       navigate("/pay", {
         state: data.clientSecret
       })
@@ -51,8 +47,11 @@ const Shipping = () => {
       console.log(error);
       toast.error("Something went wrong");
     }
-
   }
+
+  useEffect(() => {
+    if (cartItems.length <= 0) return navigate("/cart");
+  }, [cartItems]);
 
   return (
     <div className="shipping">

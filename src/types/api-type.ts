@@ -17,6 +17,17 @@ export type customError ={
         success:boolean
     }
 }
+
+export type AllUsersResponse = {
+    success: boolean;
+    user: User[];
+};
+
+export type DeleteUserRequest = {
+    userId: string;
+    adminUserId: string;
+  };
+
 // Product
 export type AllProductsResponse = {
     success: boolean;

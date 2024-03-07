@@ -1,8 +1,14 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { Column } from "react-table";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { useAllUsersQuery, useDeleteUserMutation } from "../../redux/api/userAPI";
+import { responseToast } from "../../utils/features";
+import { customError } from "../../types/api-type";
+import toast from "react-hot-toast";
 
 interface DataType {
   avatar: ReactElement;
@@ -88,7 +94,53 @@ const arr: Array<DataType> = [
 ];
 
 const Customers = () => {
+
+  const { user } = useSelector((state: RootState) => state.userReducer);
+
+  const { data, isError, isLoading, error } = useAllUsersQuery(user?._id!);
+
   const [rows, setRows] = useState<DataType[]>(arr);
+
+  const [deleteUser] = useDeleteUserMutation();
+
+  // deleteHandler
+  const deleteHandler = async (userId: string) => {
+    const res = await deleteUser({ userId, adminUserId: user?._id! });
+    responseToast(res, null, "");
+  }
+
+
+  if (isError) {
+    const err = error as customError;
+    toast.error(err.data.message);
+  }
+
+  useEffect(() => {
+    if (data)
+      setRows(
+        data.user.map((i) => ({
+          avatar: (
+            <img
+              style={{
+                borderRadius: "50%",
+              }}
+              src={i.photo}
+              alt={i.name}
+            />
+          ),
+          name: i.name,
+          email: i.email,
+          gender: i.gender,
+          role: i.role,
+          action: (
+            <button onClick={() => deleteHandler(i._id)}>
+              <FaTrash />
+            </button>
+          ),
+        }))
+      );
+  }, [data]);
+
 
   const Table = TableHOC<DataType>(
     columns,
