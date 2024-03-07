@@ -2,17 +2,17 @@ import { BiMaleFemale } from "react-icons/bi";
 import { BsSearch } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
+import { useSelector } from "react-redux";
+import { Skeleton } from "../../components/Loader";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { BarChart, DoughnutChart } from "../../components/admin/Charts";
 import Table from "../../components/admin/DashboardTable";
-import data from '../../assets/data.json'
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { useStatsQuery } from "../../redux/api/dashboardAPI";
-import { Skeleton } from "../../components/Loader";
+import { RootState } from "../../redux/store";
 import { getLastMonths } from "../../utils/features";
-const userImg =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJxA5cTf-5dh5Eusm0puHbvAhOrCRPtckzjA&usqp";
+import { customError } from "../../types/api-type";
+import toast from "react-hot-toast";
+import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
   
@@ -20,10 +20,12 @@ const Dashboard = () => {
 
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { data: datas, isError, error, isLoading } = useStatsQuery(user?._id!);
+  const { data: datas, isError, isLoading,error } = useStatsQuery(user?._id!);
 
   const stats = datas?.stats!;
-  console.log(stats?.chart?.order);
+
+  
+  if (isError) return <Navigate to={"/"} />
 
   return (
     <div className="admin-container">

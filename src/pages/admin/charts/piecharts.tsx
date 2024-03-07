@@ -1,10 +1,10 @@
-import AdminSidebar from "../../../components/admin/AdminSidebar";
-import { DoughnutChart, PieChart } from "../../../components/admin/Charts";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
-import { usePieQuery } from "../../../redux/api/dashboardAPI";
 import { Navigate } from "react-router-dom";
 import { Skeleton } from "../../../components/Loader";
+import AdminSidebar from "../../../components/admin/AdminSidebar";
+import { DoughnutChart, PieChart } from "../../../components/admin/Charts";
+import { usePieQuery } from "../../../redux/api/dashboardAPI";
+import { RootState } from "../../../redux/store";
 
 const PieCharts = () => {
 
@@ -87,7 +87,12 @@ const PieCharts = () => {
                       "Production Cost",
                       "Net Margin",
                     ]}
-                    data={[32, 18, 5, 20, 25]}
+                    data={[
+                      revenue.marketingCost,
+                      revenue.discount,
+                      revenue.burnt,
+                      revenue.productionCost,
+                      revenue.netMargin]}
                     backgroundColor={[
                       "hsl(110,80%,40%)",
                       "hsl(19,80%,40%)",

@@ -22,7 +22,6 @@ const CheckoutForm = () => {
     const {
         cartItems,
         discount,
-        loading,
         shippingCharges,
         shippingInfo,
         subtotal,

@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
-import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
-import { useState } from "react"
-import { User } from "../types/types";
-import { useDispatch } from "react-redux";
 import { signOut } from "firebase/auth";
-import { auth } from "../Services/firebase";
+import { useState } from "react";
 import toast from "react-hot-toast";
+import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { auth } from "../Services/firebase";
+import { User } from "../types/types";
 
 
 interface PropsType {
@@ -15,7 +14,6 @@ interface PropsType {
 
 function Header({ user }: PropsType) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const dispatch = useDispatch();
 
   // For User Drop Down 
   const handleUser = () => {

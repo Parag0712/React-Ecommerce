@@ -97,7 +97,7 @@ const Customers = () => {
 
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { data, isError, isLoading, error } = useAllUsersQuery(user?._id!);
+  const { data, isError, error } = useAllUsersQuery(user?._id!);
 
   const [rows, setRows] = useState<DataType[]>(arr);
 
