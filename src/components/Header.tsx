@@ -3,23 +3,33 @@ import { Link } from "react-router-dom"
 import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa"
 import { useState } from "react"
 import { User } from "../types/types";
+import { useDispatch } from "react-redux";
+import { signOut } from "firebase/auth";
+import { auth } from "../Services/firebase";
+import toast from "react-hot-toast";
 
 
 interface PropsType {
   user: User | null;
 }
 
-function Header({user}:PropsType) {
+function Header({ user }: PropsType) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   // For User Drop Down 
   const handleUser = () => {
     setIsOpen(prev => !prev);
   }
 
-  const handleSignOut = () => {
-    setIsOpen(false);
-    console.log("logout");
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Sign Out Successfully");
+      setIsOpen(false);
+    } catch (error) {
+      toast.error("Sign Out Fail");
+    }
   }
   return (
     <nav className="header">
@@ -45,7 +55,7 @@ function Header({user}:PropsType) {
                   )
                 }
                 <Link onClick={() => setIsOpen(false)} to={"/orders"}>Orders</Link>
-                <button onClick={() => { handleSignOut(); }}><FaSignOutAlt /> </button>
+                <button onClick={handleSignOut}><FaSignOutAlt /> </button>
               </div>
             </dialog>
           </>

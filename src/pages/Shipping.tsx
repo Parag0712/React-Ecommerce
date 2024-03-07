@@ -2,8 +2,10 @@ import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../redux/store";
+import { RootState, server } from "../redux/store";
 import { saveShippingInfo } from "../redux/reducers/cartReducers";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Shipping = () => {
   const navigate = useNavigate();
@@ -29,9 +31,27 @@ const Shipping = () => {
   }
 
   // Submit Handler
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(saveShippingInfo(shippingInfo));
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      dispatch(saveShippingInfo(shippingInfo));
+      const { data } = await axios.post(`${server}/api/v1/payment/create`, {
+        amount: total
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+
+
+      navigate("/pay", {
+        state: data.clientSecret
+      })
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
+
   }
 
   return (

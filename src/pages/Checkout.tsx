@@ -4,12 +4,11 @@ import { FormEvent, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { RootState } from '../redux/store';
 import { useAddOrderMutation } from '../redux/api/orderAPI';
-import { NewOrderRequest } from '../types/api-type';
 import { resetCart } from '../redux/reducers/cartReducers';
+import { RootState } from '../redux/store';
+import { NewOrderRequest } from '../types/api-type';
 import { responseToast } from '../utils/features';
-import { log10 } from 'chart.js/helpers';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
@@ -19,7 +18,7 @@ const CheckoutForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const {user} = useSelector((state:RootState)=>state.userReducer);
+    const { user } = useSelector((state: RootState) => state.userReducer);
     const {
         cartItems,
         discount,
@@ -29,12 +28,12 @@ const CheckoutForm = () => {
         subtotal,
         tax,
         total
-    } = useSelector((state:RootState)=>state.cartReducers)
+    } = useSelector((state: RootState) => state.cartReducers)
 
     const [isProcessing, setIsProcessing] = useState<boolean>(false)
 
     const [newOrder] = useAddOrderMutation()
-    
+
 
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -44,39 +43,39 @@ const CheckoutForm = () => {
         }
         setIsProcessing(true)
 
-        const orderData:NewOrderRequest= {
-            orderItems:cartItems,
+        const orderData: NewOrderRequest = {
+            orderItems: cartItems,
             shippingInfo,
             discount,
             shippingCharges,
             subtotal,
             tax,
-            user:user?._id!,
+            user: user?._id!,
             total
         }
 
-        const {error,paymentIntent} = await stripe.confirmPayment({
+        const { error, paymentIntent } = await stripe.confirmPayment({
             elements,
-            confirmParams:{
-                return_url:window.location.origin,
-                    
+            confirmParams: {
+                return_url: window.location.origin,
+
             },
-            redirect:"if_required"
+            redirect: "if_required"
         })
 
-        if(error) {
+        if (error) {
             setIsProcessing(false);
             return toast.error(error?.message! || "Something want wrong");
         }
-        
+
         if (paymentIntent.status === "succeeded") {
             const res = await newOrder(orderData);
             dispatch(resetCart());
-            responseToast(res,navigate,"/orders");
+            responseToast(res, navigate, "/orders");
         }
         setIsProcessing(false);
-        
-        
+
+
     }
     return (
         <div className="checkout-container">
