@@ -1,18 +1,18 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from "react";
+import axios from "axios";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState, server } from "../redux/store";
 import { saveShippingInfo } from "../redux/reducers/cartReducers";
-import axios from "axios";
-import toast from "react-hot-toast";
+import { RootState, server } from "../redux/store";
 
 const Shipping = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
-  const { cartItems, discount, subtotal, tax, total, shippingCharges } = useSelector((state: RootState) => state.cartReducers);
+  const { cartItems,  total } = useSelector((state: RootState) => state.cartReducers);
 
   const [shippingInfo, setShippingInfo] = useState({
     address: "",

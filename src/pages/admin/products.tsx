@@ -43,10 +43,6 @@ const columns: Column<DataType>[] = [
   },
 ];
 
-const img =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&w=1000&q=804";
-
-const img2 = "https://m.media-amazon.com/images/I/514T0SvwkHL._SL1500_.jpg";
 
 const arr: Array<DataType> = [
   
@@ -55,7 +51,7 @@ const arr: Array<DataType> = [
 const Products = () => {
 
 
-  const { user, loading } = useSelector((state: RootState) => state.userReducer)
+  const { user } = useSelector((state: RootState) => state.userReducer)
 
   const { data, isError, error,isLoading } = useAllProductsQuery(user?._id!)
 

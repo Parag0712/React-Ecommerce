@@ -3,6 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { FaRegBell } from "react-icons/fa";
 import { HiTrendingDown, HiTrendingUp } from "react-icons/hi";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { Skeleton } from "../../components/Loader";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import { BarChart, DoughnutChart } from "../../components/admin/Charts";
@@ -10,9 +11,6 @@ import Table from "../../components/admin/DashboardTable";
 import { useStatsQuery } from "../../redux/api/dashboardAPI";
 import { RootState } from "../../redux/store";
 import { getLastMonths } from "../../utils/features";
-import { customError } from "../../types/api-type";
-import toast from "react-hot-toast";
-import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
   
@@ -20,7 +18,7 @@ const Dashboard = () => {
 
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { data: datas, isError, isLoading,error } = useStatsQuery(user?._id!);
+  const { data: datas, isError, isLoading } = useStatsQuery(user?._id!);
 
   const stats = datas?.stats!;
 
