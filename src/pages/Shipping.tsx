@@ -1,11 +1,14 @@
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, FormEvent, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
+import { saveShippingInfo } from "../redux/reducers/cartReducers";
 
 const Shipping = () => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const { cartItems, discount, subtotal, tax, total, shippingCharges } = useSelector((state: RootState) => state.cartReducers);
 
@@ -17,7 +20,7 @@ const Shipping = () => {
     city: "",
     state: "",
     country: "",
-    pinCode: "",
+    pincode: "",
   });
 
   //Change Handler
@@ -26,8 +29,9 @@ const Shipping = () => {
   }
 
   // Submit Handler
-  const submitHandler = () => {
-    
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(saveShippingInfo(shippingInfo));
   }
 
   return (
@@ -80,8 +84,8 @@ const Shipping = () => {
           required
           type="number"
           placeholder="Pin Code"
-          name="pinCode"
-          value={shippingInfo.pinCode}
+          name="pincode"
+          value={shippingInfo.pincode}
           onChange={changeHandler}
         />
 

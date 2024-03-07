@@ -1,12 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useDeleteProductMutation, useProductDetailsQuery, useUpdateProductMutation } from "../../../redux/api/productAPI";
 import { RootState, server } from "../../../redux/store";
-import { customError } from "../../../types/api-type";
 import { responseToast } from "../../../utils/features";
 
 const Productmanagement = () => {
@@ -14,7 +12,7 @@ const Productmanagement = () => {
 
   const { user } = useSelector((state: RootState) => state.userReducer);
 
-  const { isError, error, data } = useProductDetailsQuery(params?.id!);
+  const { isError,data } = useProductDetailsQuery(params?.id!);
 
   const { category, name, photo, price, stock } = data?.product || {
     photo: "",
